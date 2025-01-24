@@ -13,15 +13,17 @@ float cameraDistance = 5.0f;  // Distância da câmera ao centro
 
 // Desenha a half-pipe
 void desenhaPista() {
-    glColor3f(0.3f, 0.3f, 0.3f); // Cinza
+    glColor3f(0.0f, 0.0f, 0.0f); // Preto
     glLineWidth(4.0f);
     
-    // Lateral esquerda
+    // Laterais e base da pista
     glBegin(GL_LINE_STRIP);
     glVertex2f(-1.5f, 0.0f);
     glVertex2f(-1.8f, 0.0f);
     glVertex2f(-1.8f, -1.15f);
-    glVertex2f(-1.5f, -1.15f);
+    glVertex2f(1.8f, -1.15f);
+    glVertex2f(1.8f, 0.0f);
+    glVertex2f(1.5f, 0.0f);
     glEnd();
 
     // Formato em "U"
@@ -31,20 +33,6 @@ void desenhaPista() {
         float y = sin(t);
         glVertex2f(x, y);
     }
-    glEnd();
-
-    // Lateral direita
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(1.5f, 0.0f);
-    glVertex2f(1.8f, 0.0f);
-    glVertex2f(1.8f, -1.15f);
-    glVertex2f(1.5f, -1.15f);
-    glEnd();
-
-    // Base da pista
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(-1.5f, -1.15f);
-    glVertex2f(1.5f, -1.15f);
     glEnd();
 }
 
