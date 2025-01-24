@@ -1,5 +1,5 @@
 #include <GL/glut.h>
-#include <cmath>
+#include <math.h>
 
 // Variáveis globais
 float posicaoSkatista = 0.0f; // Posição do skatista (0 a 1 normalizada)
