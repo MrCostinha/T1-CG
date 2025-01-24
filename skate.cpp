@@ -5,45 +5,55 @@
 float posicaoSkatista = 0.0f; // Posição do skatista (0 a 1 normalizada)
 float direcao = 1.0f;         // Direção do movimento (+1 ou -1)
 float velocidade = 0.005f;    // Velocidade do skatista
-float aberturaPista = 0.5f;   // Abertura das pernas da pista
 
 // Variáveis para controle da câmera
-float cameraAngleY = 0.0f;    // Ângulo de rotação horizontal
+float cameraAngleY = 1.5f;    // Ângulo de rotação horizontal
 float cameraAngleX = 0.0f;    // Ângulo de inclinação vertical
 float cameraDistance = 5.0f;  // Distância da câmera ao centro
 
-// Desenha a pista em formato de "U" com pernas ajustáveis
+// Desenha a half-pipe
 void desenhaPista() {
     glColor3f(0.3f, 0.3f, 0.3f); // Cinza
     glLineWidth(4.0f);
+    
+    // Lateral esquerda
     glBegin(GL_LINE_STRIP);
+    glVertex2f(-1.5f, 0.0f);
+    glVertex2f(-1.8f, 0.0f);
+    glVertex2f(-1.8f, -1.15f);
+    glVertex2f(-1.5f, -1.15f);
+    glEnd();
 
-    // Lado esquerdo inclinado
-    for (float y = -0.5f; y <= 0.5f; y += 0.01f) {
-        glVertex2f(-1.5f + aberturaPista * y, y);
-    }
-
-    // Curva do "U" (semicírculo inferior)
+    // Formato em "U"
+    glBegin(GL_LINE_STRIP);
     for (float t = 3.14f; t <= 2.0f * 3.14f; t += 0.01f) {
         float x = cos(t) * 1.5f;
-        float y = sin(t) - 0.5f;
+        float y = sin(t);
         glVertex2f(x, y);
     }
+    glEnd();
 
-    // Lado direito inclinado
-    for (float y = 0.5f; y >= -0.5f; y -= 0.01f) {
-        glVertex2f(1.5f - aberturaPista * y, y);
-    }
+    // Lateral direita
+    glBegin(GL_LINE_STRIP);
+    glVertex2f(1.5f, 0.0f);
+    glVertex2f(1.8f, 0.0f);
+    glVertex2f(1.8f, -1.15f);
+    glVertex2f(1.5f, -1.15f);
+    glEnd();
 
+    // Base da pista
+    glBegin(GL_LINE_STRIP);
+    glVertex2f(-1.5f, -1.15f);
+    glVertex2f(1.5f, -1.15f);
     glEnd();
 }
 
-// Desenha o skate com rodas e prancha mais fina
+// Desenha o skate com rodas e prancha
 void desenhaSkate(float x, float y) {
     glPushMatrix();
-    glTranslatef(x, y - 0.25f, 0.0f); // Posiciona o skate próximo aos pés do skatista
+    glTranslatef(x, y - 0.18f, 0.0f); // Posiciona o skate próximo aos pés do skatista
 
-    // Desenha a prancha do skate (mais fina)
+    // Desenha a prancha do skate
     glColor3f(0.0f, 0.0f, 0.0f); // Preto
     glBegin(GL_QUADS);
     glVertex2f(-0.2f, -0.05f);
@@ -75,18 +85,10 @@ void desenhaSkatista() {
     float x, y;
 
     // Determina a posição do skatista ao longo da pista
-    if (posicaoSkatista < 0.25f) { // Lado esquerdo inclinado
-        float t = posicaoSkatista / 0.25f; // Proporção
-        x = -1.5f + aberturaPista * (-0.5f + t);
-        y = -0.5f + t;
-    } else if (posicaoSkatista < 0.75f) { // Curva
-        float t = 3.14f + (posicaoSkatista - 0.25f) * 3.14f * 2;
+    if (posicaoSkatista < 1.0f) { // Curva
+        float t = 3.14f + posicaoSkatista * 3.14f;
         x = cos(t) * 1.5f;
-        y = sin(t) - 0.5f;
-    } else { // Lado direito inclinado
-        float t = (posicaoSkatista - 0.75f) / 0.25f; // Proporção
-        x = 1.5f - aberturaPista * (-0.5f + t);
-        y = 0.5f - t;
+        y = sin(t) + 0.28f;
     }
 
     // Desenha o skatista
@@ -189,15 +191,7 @@ void teclado(unsigned char key, int x, int y) {
         if (velocidade > 0.002f) // Evita velocidade negativa
             velocidade -= 0.002f;
         break;
-    case 'a': // Fecha as pernas da pista
-        if (aberturaPista > 0.2f) // Limite mínimo
-            aberturaPista -= 0.05f;
-        break;
-    case 'd': // Abre as pernas da pista
-        if (aberturaPista < 0.8f) // Limite máximo
-            aberturaPista += 0.05f;
-        break;
-    case 27: // Tecla ESC para sair
+    case 'q': // Tecla ESC para sair
         exit(0);
     }
     glutPostRedisplay();
