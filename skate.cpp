@@ -21,7 +21,7 @@ float calculaAngulo(float t) {
 // Desenha a half-pipe
 void desenhaPista() {
     glColor3f(0.0f, 0.0f, 0.0f); // Preto
-    glLineWidth(16.0f);
+    glLineWidth(4.0f);
 
     // Laterais e base da pista
     glBegin(GL_LINE_STRIP);
