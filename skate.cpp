@@ -158,11 +158,16 @@ void display() {
 void teclado(unsigned char key, int x, int y) {
     switch (key) {
     case 'w': // Aumenta a velocidade do skatista
-        velocidade += 0.002f;
+        velocidade += 0.003f;
         break;
     case 's': // Diminui a velocidade do skatista
-        if (velocidade > 0.002f) // Evita velocidade negativa
-            velocidade -= 0.002f;
+        velocidade -= 0.003f;
+        break;
+    case 'a':
+        velocidade = 0.0f; // Para o skatista
+        break;
+    case 'd':
+        velocidade = 0.009f; // Volta para a velocidade normal
         break;
     case 'q': // Sai do programa
         exit(0);
